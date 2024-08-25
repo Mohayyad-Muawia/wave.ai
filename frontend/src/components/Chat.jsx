@@ -49,7 +49,7 @@ const Chat = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:4000/send', {
+            const response = await fetch('https://wave-1y2j.onrender.com/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
