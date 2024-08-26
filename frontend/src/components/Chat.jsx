@@ -40,7 +40,6 @@ const Chat = () => {
     useEffect(() => {
         chatScroll();
     }, [loading, response]);
-    console.log('test');
     
     async function handleSubmit(e) {
         e.preventDefault();
