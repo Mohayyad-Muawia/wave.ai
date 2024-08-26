@@ -5,15 +5,24 @@ import { marked } from 'marked';
 
 const Chat = () => {
 
+    // API logic
+    const [prompt, setPrompt] = useState('');
+    const [response, setResponse] = useState('');
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(null);
+
+    const welcomeDisplay = () => {
+        document.querySelector('.welcome').innerHTML = ''
+    }
     useEffect(() => {
 
         
-        // window.localStorage.clear()
         const loadChat = () => {
             const chat = JSON.parse(window.localStorage.getItem('chat'))
             const chatBox = document.querySelector('.chat-box') 
             
             if(chat){
+                welcomeDisplay()
                 chatBox.innerHTML = ''
                 chat.forEach(mssg => {
                     const div = document.createElement('div')
@@ -21,35 +30,27 @@ const Chat = () => {
                     div.classList = mssg.type
                     chatBox.appendChild(div)
                 });
-            } else if(!chat || chat == ''){
-                setWelcome(true)
-            }
-    
+            } 
         }
         
         loadChat()    
     },[])
 
-    // API logic
-    const [prompt, setPrompt] = useState('');
-    const [response, setResponse] = useState('');
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(null);
-    const [welcome, setWelcome] = useState(true)
 
     useEffect(() => {
         chatScroll();
     }, [loading, response]);
-
+    console.log('test');
+    
     async function handleSubmit(e) {
         e.preventDefault();
-        setWelcome(false)
+        welcomeDisplay()
         appendMsg(prompt);
         setPrompt('');
         setLoading(true);
 
         try {
-            const response = await fetch('https://wave-1y2j.onrender.com/send', {
+            const response = await fetch('http://localhost:4000/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,9 +74,6 @@ const Chat = () => {
             setLoading(false);
         }
     }
-
-    let chatHistory = window.localStorage.getItem('chat', JSON.stringify())
-    // chatBox.innerHTML = json.parse
 
     const appendMsg = (content) => {
         const chatBox = document.querySelector('.chat-box');
@@ -130,7 +128,6 @@ const Chat = () => {
 
             <div className="container">
                 <div className="chat-box">
-                    {welcome && 
                     <div className="welcome">
                         <img src="./logo.png" alt="" />
                         <div className="sugs">
@@ -139,7 +136,7 @@ const Chat = () => {
                             <div className="sugg" onClick={suggestion}><i class="fa-solid fa-book-open"></i> <p>Help me study</p></div>
                             <div className="sugg" onClick={suggestion}><i class="fa-solid fa-magnifying-glass"></i> <p>Give me search results for</p></div>
                         </div>
-                    </div>}
+                    </div>
                     {loading && <Loading />}
                 </div>
             </div>
