@@ -14,7 +14,7 @@ const options = {
     origin: 'https://wave-ai.onrender.com',
     optionsSuccessStatus: 200,
 }
-app.use(cors())
+app.use(cors(options))
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY)
 const model = genAI.getGenerativeModel({ model: "gemini-pro" })
