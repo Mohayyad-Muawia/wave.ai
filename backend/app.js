@@ -8,6 +8,12 @@ require('dotenv').config()
 
 app.use(express.json())
 app.use(morgan('dev'))
+
+const options = {
+    // Only allow access from frontend
+    origin: 'https://wave-ai.onrender.com',
+    optionsSuccessStatus: 200,
+}
 app.use(cors())
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY)
